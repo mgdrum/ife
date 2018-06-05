@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="fade-obj" style="width:300px;height:300px;background:#000"></div>
+		<button id="fade-btn">淡出</button>
+		<script>
+				var btn=document.getElementById("fade-btn");
+				var div=document.getElementById("fade-obj");
+				var op=1;
+				function danchu(){
+					op=op-0.1;
+					if(op>0){
+						setTimeout("danchu()",1000);
+						div.style.opacity=op;
+					}
+				}
+				btn.onclick=function(){
+					danchu();
+				};
+		</script>
+	</body>
+</html>

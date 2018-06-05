@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			/*图片大小宽480高479,每张图片间有1px的间隙,第一张上面就有.*/
+			div{
+				width: 480px;
+				height: 479px;
+				margin: 0 auto;
+				background: url(img/animation.jpg);
+				background-repeat: no-repeat;
+			}
+			.one{
+				background-position: 0px -1px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="one"></div>
+		<script>
+			var max=17;
+			var div=document.querySelector("div");
+					var count=0;
+					var flag=true;
+					var bption=-1;
+					setInterval(function(){
+						if(flag==true){
+							var timeId3=setInterval(function(){
+								count+=1;
+								bption-=480;
+								div.style.backgroundPosition="0px "+bption+"px";
+								if(count>=16){
+									flag=false;
+									clearInterval(timeId3);
+								}
+							},100);
+  						}
+						else{
+							var timeId4=setInterval(function(){
+								count-=1;
+								bption+=480;
+								div.style.backgroundPosition="0px "+bption+"px";
+								if(count<=0){
+									flag=true;
+									clearInterval(timeId4);
+								}
+							},100);
+  						}
+					},2000);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,40 @@
+body{
+	margin: 0;
+}
+h1{
+	margin-top: 0;
+	background-color:#848484;
+	color: white;
+	padding: 1em;
+	font-size:17px;
+	margin-bottom: 0;
+}
+.h2_essential{
+	display: block;
+	width: 130px;
+	height: 130px;
+	background-color: #D6D6D6;
+	text-align: center;
+	font-size: 15px;
+	line-height: 130px;
+	margin: 0;
+	float: left;
+}
+p{
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color:rgb(50,50,50);
+	/*float: left;*/
+}
+.clear::before,.clear::after{
+	content: "";
+	display: table;
+}
+.clear::after{
+	clear: both;
+}
+div{
+	border:solid 1px #EEEEEE;
+}
+/*.left{
+	float: left;
+}*/

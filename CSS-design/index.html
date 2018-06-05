@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			 body{
+				margin: 0;
+				text-align: center;
+			}
+			h2{
+				margin-top: 200px;
+			}
+			h2 a{
+				text-decoration: none;
+				color: #4285F4;
+				/*position: relative;*/
+			}
+			button{
+				background: #FFF;
+				padding: 5px 10px 5px 10px;
+				border: solid 2px #dddddd;
+			}
+			.sp{
+				position: relative;
+				top: -1em;
+				display: inline-block;
+				height: 2px;
+				width: 96px;
+				background: #DDDDDD;
+				animation: myfirst 1s;
+			}
+			.sp1{
+				position: relative;
+				top: -1em;
+				display: inline-block;
+				height: 2px;
+				width: 96px;
+				background: #DDDDDD;
+				content: "";
+				animation: myfirst1 1s;
+			}
+			@keyframes myfirst{
+				from{-webkit-transform: scaleX(0);transform: scaleX(0);}
+				to{-webkit-transform:scaleX(1);transform: scaleX(1);}
+			}
+			@keyframes myfirst1{
+				from{}
+				to{-webkit-transform: scaleX(0);transform: scaleX(0);opacity:0;}
+		</style>
+	</head>
+	<body>
+		<h2><a href="#" class="xh">前端学院</a></h2>
+		<span class="" id="span"></span>
+		<br />
+		<button id="btn">切换样式</button>
+		<script>
+			var btn=document.getElementById("btn");
+			var span=document.getElementById("span");
+			var count=0;
+			btn.onclick=function()
+			{
+				count++;
+				if(count<=1){
+					span.className="sp";
+				}
+				else if(count>1){
+					
+					span.className="sp1";
+					setTimeout(function () {
+					span.style.display = "none";	
+					}, 1000);
+				}
+			}
+		</script>
+		 
+	</body>
+</html>

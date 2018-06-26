@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			var myDate=new Date();
+			myDate.setFullYear(2008);
+			myDate.setMonth(1);
+			myDate.setDate(1);
+			var time="";
+			function getWeekday(){/*获取星期几*/
+				var weekday=[],
+				str="星期";
+				weekday.push("日","一","二","三","四","五","六");
+				 return str+weekday[myDate.getDay()];
+			}
+			console.log(getWeekday());//星期一
+			function getYearMonthDate()//获取年月日
+			{
+				var strM="",
+				strD="";
+				if(myDate.getMonth()<10){
+					strM=strM+"0"+myDate.getMonth()+"月";
+				}
+				else{
+					strM+=myDate.getMonth()+"月";
+				}
+				if(myDate.getDate()<10)
+				{
+					strD=strD+"0"+myDate.getDate()+"日";
+				}
+				else{
+					
+					strD+=myDate.getDate()+"日";
+				}
+				return myDate.getFullYear()+"年"+strM+strD;
+			}
+			console.log(getYearMonthDate());//2018年05月25日
+			function getHMS(){//获取时分秒
+				var strH="",
+				strM="",
+				strS="";
+				if(myDate.getHours()<10)
+				{
+					strH=strH+"0"+myDate.getHours();
+				}
+				else{
+					strH=myDate.getHours();
+				}
+				if(myDate.getMinutes()<10)
+				{
+					strM=strM+"0"+myDate.getMinutes();
+				}
+				else{
+					strM=myDate.getMinutes();
+				}
+				if(myDate.getSeconds()<10)
+				{
+					strS=strS+"0"+myDate.getSeconds();
+				}
+				else{
+					strS=myDate.getSeconds();
+				}
+				return strH+":"+strM+":"+strS;
+			}
+			console.log(getHMS());
+			time=time+getYearMonthDate()+getWeekday()+" "+getHMS();
+			alert(time);
+		</script>
+	</body>
+</html>

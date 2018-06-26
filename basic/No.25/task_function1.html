@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--我有更改了与注释快捷键冲突的Mac系统菜单键，选中内容注释command+shift+?可以用了-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			var currentObj;
+			var steps=0,dsteps=0;/*当前的步数,当前方向的步数*/
+			function Obj(d){
+				this.direction=d;
+				this.dsteps=0;
+			}
+			var uObj=new Obj("up");
+			var rObj=new Obj("right");
+			var dObj=new Obj("down");
+			var lObj=new Obj("left");
+			var Go=function(o){
+				currentObj=o;
+				o.dsteps++;
+				steps++;
+				console.log("我的方向是"+o.direction+",当前方向的步数是"+o.dsteps+",当前累计步数为"+steps);
+			};
+			var objs=[uObj,rObj,dObj,lObj];
+			function TurnLeft()
+			{
+				if(currentObj==objs[0])
+				{
+					Go(lObj);
+				}
+				else if(currentObj==objs[1])
+				{
+					Go(uObj);
+				}
+				else if(currentObj==objs[2])
+				{
+					Go(rObj);
+				}
+				else{
+					Go(dObj);
+				}
+			}
+			function TurnRight() {
+			    TurnLeft();
+			    TurnLeft();
+			    TurnLeft();    
+			}
+			function GoSteps(n) {
+				if((arguments[0]<=0)||(isNaN(arguments[0])==true)||arguments[0]==true)
+				{
+					
+				}
+				if(!isNaN(arguments[0])&&arguments[0]>=1)
+				{
+					n=Math.floor(arguments[0]);
+					while (n--) {
+			        Go(currentObj);
+			    		}
+				}
+				else if(arguments[0]==true)
+				{
+					n==1;
+					while (n--) {
+			        Go(currentObj);
+			    		}
+				}
+				else{
+					return;
+				}
+			    
+			}
+			Go(uObj);
+			Go(uObj);
+			TurnLeft();
+			TurnLeft();
+			TurnLeft();
+			TurnLeft();
+			GoSteps(5);
+			GoSteps(1.5);
+			GoSteps(1.6);
+			GoSteps("Test");
+		</script>
+	</body>
+</html>

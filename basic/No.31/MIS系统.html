@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<select id="region-select">
+			<option value="华东" selected="selected">华东</option>
+			<option value="华南">华南</option>
+			<option value="华北">华北</option>
+		</select>
+		<select id="product-select">
+			<option value="手机" selected="selected">手机</option>
+			<option value="笔记本">笔记本</option>
+			<option value="智能音箱">智能音箱</option>
+		</select>
+		<div id="region-radio-wrapper">
+			<input type="checkbox" id="region-all" value="全选"/>
+			<label for="region-all">全选</label>
+			<input type="checkbox" id="region-south-china" value="华南" checked="checked"/>
+			<label for="region-south-china">华南</label>
+			<input type="checkbox" id="region-north-china" value="华北"/>
+			<label for="region-north-china">华北</label>
+			<input type="checkbox" id="region-east-china" value="华东"/>
+			<label for="region-east-china">华东</label>
+		</div>
+		<div id="product-radio-wrapper">
+			<input type="checkbox" id="product-all" value="全选"/>
+			<label for="product-all">全选</label>
+			<input type="checkbox" id="product-phone" value="手机" checked="checked"/>
+			<label for="product-phone">手机</label>
+			<input type="checkbox" id="product-computer" value="笔记本"/>
+			<label for="product-computer">笔记本</label>
+			<input type="checkbox" id="product-sound" value="智能音箱"/>
+			<label for="product-sound">智能音箱</label>
+		</div>
+		<div id="table-wraper">
+			
+		</div>
+		<script type="text/javascript" src="js/ife31data.js" ></script>
+		<script>
+			window.onload = function() {
+				var reginonSelectNode = document.getElementById("region-select"), // 选择地区对象
+				productSelectNode = document.getElementById("product-select"), //选择商品对象
+				tableWraperNode = document.getElementById("table-wraper"), // 输出表格对象
+				regionCheckNodes = document.getElementById("region-radio-wrapper").querySelectorAll("input"),
+				productCheckNodes = document.getElementById("product-radio-wrapper").querySelectorAll("input");
+				renderNewForm1(selectData(sourceData));
+				
+				for(var i=0;i<regionCheckNodes.length;i++){ //点击复选框事件
+					if(i == 0) {
+						regionCheckNodes[0].onclick = function() {
+							if((checkedNum(regionCheckNodes)<3)){
+								regionCheckNodes[1].checked = true;
+								regionCheckNodes[2].checked = true;
+								regionCheckNodes[3].checked = true;
+								renderNewForm1(multipleSelectData(sourceData));
+							}
+							if(checkedNum(regionCheckNodes)==3){
+								regionCheckNodes[0].checked = true;
+							}
+							
+						};
+						productCheckNodes[0].onclick=function(){
+							if((checkedNum(productCheckNodes)<3)){
+								productCheckNodes[1].checked = true;
+								productCheckNodes[2].checked = true;
+								productCheckNodes[3].checked = true;
+								renderNewForm1(multipleSelectData(sourceData));
+							}
+							if(checkedNum(productCheckNodes)==3){
+								productCheckNodes[0].checked = true;
+							}
+						};
+					}else{
+						
+						regionCheckNodes[i].onclick=function(e){
+							if((checkedNum(regionCheckNodes))<3){
+								regionCheckNodes[0].checked = false;
+							}else{
+								regionCheckNodes[0].checked = true;
+							}
+							renderNewForm1(multipleSelectData(sourceData));
+						};
+						productCheckNodes[i].onclick=function(e){
+							if((checkedNum(productCheckNodes))<3){
+								productCheckNodes[0].checked = false;
+							}else{
+								productCheckNodes[0].checked = true;
+							}
+							renderNewForm1(multipleSelectData(sourceData));
+						};
+					}
+				}
+				function checkedNum(collection) { //检查选中几个复选框
+					var sum=0;
+					
+					for(var i = 1; i < 4; i++) {
+						if(isTrueFalse(collection[i]) == "true") {
+							sum += 1;
+						}
+					}
+					
+					return sum;
+				}
+				
+				function selectData(data) { //选择的数据
+					var regionName = reginonSelectNode.value, // 地区
+					productName = productSelectNode.value, //商品
+					resultData = []; // 选择地区的数据
+					
+					data.forEach(function(current) {
+						if((current["region"] == regionName)&&(current["product"] == productName))
+						{
+							resultData.push(current);
+						}
+					});
+					return resultData;
+				}
+				
+				function isTrueFalse(checks) { // 判断复选框是否被选中
+					return checks.checked == true ? "true" : "false";
+				}
+				
+				function multipleSelectData(data) { // 返回的数据
+					var regions = [], //选择的地区
+					products = [], //选择的商品
+					resultData = []; //数据结果
+					regionChecks=[],
+					productChecks=[];
+					for(var j = 1; j < 4; j++) { //注意第一个是全选
+						if(isTrueFalse(regionCheckNodes[j]) == "true"){
+							regions.push(regionCheckNodes[j].value);
+						}
+						if(isTrueFalse(productCheckNodes[j]) == "true"){
+							products.push(productCheckNodes[j].value);
+						}
+					}
+					data.forEach(function(current){
+						for(var i = 0; i < regions.length; i++) {
+							if(current["region"] == regions[i])
+							{
+								for(var j=0;j<products.length;j++){
+									if(current["product"]==products[j])
+									{
+										resultData.push(current);
+									}
+								}
+							
+							}
+						}
+					});
+					return resultData;
+				}
+				
+//				function renderNewForm(data) { //渲染新的表格
+//					var rowLength=data.length, // 判断数组的长度
+//					tbNode=document.createElement("table"),
+//					trNode=document.createElement("tr"), //第一行是固定的
+//					tdNode,spArr=[],rgArr=[],saleArr=[rowLength],td=[];
+//					var first,second,rgNum,pdNum;
+//					
+//					rgNum = checkedNum(regionCheckNodes); // 选择地区的数量
+//					pdNum = checkedNum(productCheckNodes); // 选择产品的数量
+//					first = checkedNum(regionCheckNodes) >= checkedNum(productCheckNodes) ? "商品" : "地区";
+//					second = checkedNum(regionCheckNodes) >= checkedNum(productCheckNodes) ? "地区" : "商品";
+//					trNode.innerHTML = "<td>"+first+"</td><td>"+second+"</td><td>1月</td><td>2月</td><td>3月</td><td>4月</td><td>5月</td><td>6月</td><td>7月</td><td>8月</td><td>9月</td><td>10月</td><td>11月</td><td>12月</td>";
+//					tbNode.appendChild(trNode);
+//					
+//					for(var i = 0; i < rowLength; i++){
+//						spArr.push(data[i].product); //商品
+//						rgArr.push(data[i].region); //地区
+//						saleArr[i]=new Array(12); //js无法同过var a=[][]的形式创建数组，只能用数组里面的数组。
+//						for(var j = 0; j < 12; j++){
+//							saleArr[i][j]=(data[i].sale[j]); //销售额
+//						}
+//					}
+//					
+//					for(var i = 0; i < rowLength; i++) { 
+//						var tr=document.createElement("tr");
+//						for(var j = 0; j < 14; j++) {
+//							var td = document.createElement("td");
+//							switch(j) {
+//								case 0:
+//								var a=document.querySelector(".firsttd");
+//								if(pdNum == 1 && a != null){
+//									break;
+//								}
+//								else if(pdNum == 1) {
+//									td.className = "firsttd";
+//									td.innerHTML = spArr[i];
+//									td.rowSpan = rowLength;
+//									break;
+//								}
+//								else{
+//									td.innerHTML=spArr[i];
+//								}
+//								
+//								break;
+//								case 1:
+//								td.innerHTML = rgArr[i]; //地区列
+//								break;
+//								default:
+//								td.innerHTML = saleArr[i][j-2];
+//							}
+//							
+//							tr.appendChild(td);
+//						}
+//						
+//						tbNode.appendChild(tr);
+//					}
+//					
+//					if(tableWraperNode.firstElementChild = null){
+//						tableWraperNode.appendChild(tbNode);
+//					}else{
+//						tableWraperNode.innerHTML = "";
+//						tableWraperNode.appendChild(tbNode);
+//					}
+//				}
+				function renderNewForm1(data) {
+					var rowLength=data.length, // 判断数组的长度
+					tbNode=document.createElement("table"),
+					trNode=document.createElement("tr"), //第一行是固定的
+					tdNode,spArr=[],rgArr=[],saleArr=[rowLength],td=[];
+					var first,second,rgNum,pdNum;
+					
+					rgNum = checkedNum(regionCheckNodes); // 选择地区的数量
+					pdNum = checkedNum(productCheckNodes); // 选择产品的数量
+					first = checkedNum(regionCheckNodes) >= checkedNum(productCheckNodes) ? "商品" : "地区";
+					second = checkedNum(regionCheckNodes) >= checkedNum(productCheckNodes) ? "地区" : "商品";
+					trNode.innerHTML = "<td>"+first+"</td><td>"+second+"</td><td>1月</td><td>2月</td><td>3月</td><td>4月</td><td>5月</td><td>6月</td><td>7月</td><td>8月</td><td>9月</td><td>10月</td><td>11月</td><td>12月</td>";
+					tbNode.appendChild(trNode);
+					
+					for(var i = 0; i < rowLength; i++){ //用来存储商品和地区的数组
+						spArr.push(data[i].product); //商品
+						rgArr.push(data[i].region); //地区
+						saleArr[i]=new Array(12); //js无法同过var a=[][]的形式创建数组，只能用数组里面的数组。
+						for(var j = 0; j < 12; j++){
+							saleArr[i][j]=(data[i].sale[j]); //销售额
+						}
+					}
+					
+					if(rgNum == 1 && pdNum == 1) { // 如果商品一个，地区一个
+						for(var i=0; i<rowLength; i++) {
+							var tr=document.createElement("tr");
+							if (i==0) { //if else for前后有空格
+								var td0=document.createElement("td");
+								var td1=document.createElement("td");
+								td0.innerHTML = spArr[i];
+								td0.rowSpan=rowLength;
+								td1.innerHTML = rgArr[i];
+								td1.rowSpan=rowLength;
+								tr.appendChild(td0);
+								tr.appendChild(td1);
+								for (var j = 0; j < 12; j++) {
+									var td=document.createElement("td");
+									td.innerHTML = saleArr[i][j];
+									tr.appendChild(td);
+								}
+							} else {
+								var tr=document.createElement("tr");
+								for (var j = 0; j < 12; j++) {
+									var td=document.createElement("td");
+									td.innerHTML = saleArr[i][j];
+									tr.appendChild(td);
+								}
+							}
+							tbNode.appendChild(tr);
+						}
+						
+					}
+					if (rgNum > 1 && pdNum == 1) { // 如果商品一个，地区多个
+						for(var i=0; i<rowLength; i++) {
+							var tr=document.createElement("tr");
+							if (i==0) { //if else for前后有空格
+								var td0=document.createElement("td");
+								td0.innerHTML = spArr[i];
+								td0.rowSpan=rowLength;
+								tr.appendChild(td0);
+								for (var j = 0; j < 13; j++) {
+									var td=document.createElement("td");
+									if (j == 0) {
+										td.innerHTML = rgArr[i];
+									}
+									else{
+										td.innerHTML = saleArr[i][j-1];
+									}
+									tr.appendChild(td);
+								}
+							} else {
+								var tr=document.createElement("tr");
+								for (var j = 0; j < 13; j++) {
+									var td=document.createElement("td");
+									if (j == 0) {
+										td.innerHTML = rgArr[i];
+									}
+									else{
+										td.innerHTML = saleArr[i][j-1];
+									}
+
+									tr.appendChild(td);
+								}
+							}
+							tbNode.appendChild(tr);
+						}
+					}
+					if (rgNum == 1 && pdNum > 1) { // 如果商品多个，地区一个
+						for(var i=0; i<rowLength; i++) {
+							var tr=document.createElement("tr");
+							if (i==0) { //if else for前后有空格
+								var td0=document.createElement("td");
+								
+								td0.innerHTML = rgArr[i];
+								td0.rowSpan=rowLength;
+								tr.appendChild(td0);
+								for (var j = 0; j < 13; j++) {
+									var td=document.createElement("td");
+									if (j == 0) {
+										td.innerHTML = spArr[i];
+									}
+									else{
+										td.innerHTML = saleArr[i][j-1];
+									}
+									tr.appendChild(td);
+								}
+							} else {
+								var tr=document.createElement("tr");
+								for (var j = 0; j < 13; j++) {
+									var td=document.createElement("td");
+									if (j == 0) {
+										td.innerHTML = spArr[i];
+									}
+									else{
+										td.innerHTML = saleArr[i][j-1];
+									}
+
+									tr.appendChild(td);
+								}
+							}
+							tbNode.appendChild(tr);
+						}
+					}
+					if (rgNum > 1 && pdNum > 1) { // 如果商品多个，地区多个商品在前。相同的商品合并
+						
+						for(var i=0; i<rowLength; i++) {
+							var tr1=document.createElement("tr");
+							if(i%rgNum==0){
+								var td=document.createElement("td");
+								td.innerHTML=spArr[i];
+								td.rowSpan=rgNum;
+								tr1.appendChild(td);
+							}
+							
+									for(var j=0; j++; j<13){
+									var td1=document.createElement("td");
+									if (j == 0) {
+										td1.innerHTML = spArr[i];
+									}else{
+										td1.innerHTML = saleArr[i][j-1];
+									}
+									tr1.appendChild(td1);
+								}
+							
+							tbNode.appendChild(tr1);
+						}
+					}
+					if(tableWraperNode.firstElementChild = null){
+						tableWraperNode.appendChild(tbNode);
+					}else{
+						tableWraperNode.innerHTML = "";
+						tableWraperNode.appendChild(tbNode);
+					}
+				}
+			};
+		</script>
+	</body>
+</html>
